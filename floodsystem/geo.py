@@ -22,5 +22,5 @@ def stations_by_distance(stations, p):
         output_list.append((station, distance))
 
     # Sort the list so by shortest distance
-    sorted_by_key(output_list, 1)
-    return output_list
+    sorted_output = sorted_by_key(output_list, 1)
+    return sorted_output
