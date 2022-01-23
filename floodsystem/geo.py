@@ -32,15 +32,32 @@ def stations_by_distance(stations, p):
 def rivers_by_station_number(stations, N):
     # Function to return the number of stations on each river
 
+    # Create empty dictionary to keep track of the number of stations on each river
     number_of_stations_dict = {}
+
+    # Iterating through all stations in the database
     for station in stations:
-        if not number_of_stations_dict[station.river]:
-            number_of_stations_dict[station.river] = 1
-        else:
+        # If river already has an entry in the dictionary, adds 1 to the count
+        if station.river in number_of_stations_dict:
             number_of_stations_dict[station.river] += 1
+        
+        # If no entry for the river in the dictionary, creates a new item with a count of 1
+        else:
+            number_of_stations_dict[station.river] = 1
     
+    # Creates empty list for appending tuples to
     output_list = []
+
+    # Iterate through the dictionary to append the tuples in the right format to the output_list
     for river, number in number_of_stations_dict.items():
         output_list.append((river, number))
-    sorted_output = sorted_by_key(output_list, 1)
+
+    # Sort the list by the number of stations with the highes first
+    sorted_output = sorted_by_key(output_list, 1, reverse=True)
+
+    # Check consecutively if the next largest river has the same number of stations. If so, increase the number of stations printed
+    while sorted_output[N][1] == sorted_output[N - 1][1]:
+        N += 1 
+
+    # Return the N rivers with the most stations as a list of tuples
     return sorted_output[:N]
