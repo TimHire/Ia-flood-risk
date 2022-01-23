@@ -6,10 +6,13 @@ geographical data.
 
 """
 
+from numpy import number
 from .utils import sorted_by_key  # noqa
 from haversine import haversine
 
 def stations_by_distance(stations, p):
+    # Function to return a list of all the distances from every station to a specified point p
+
     # Create empty list to append tuples of (station, distance) to
     output_list = []
 
@@ -24,3 +27,20 @@ def stations_by_distance(stations, p):
     # Sort the list so by shortest distance
     sorted_output = sorted_by_key(output_list, 1)
     return sorted_output
+
+
+def rivers_by_station_number(stations, N):
+    # Function to return the number of stations on each river
+
+    number_of_stations_dict = {}
+    for station in stations:
+        if not number_of_stations_dict[station.river]:
+            number_of_stations_dict[station.river] = 1
+        else:
+            number_of_stations_dict[station.river] += 1
+    
+    output_list = []
+    for river, number in number_of_stations_dict.items():
+        output_list.append((river, number))
+    sorted_output = sorted_by_key(output_list, 1)
+    return sorted_output[:N]
