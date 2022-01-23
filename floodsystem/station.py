@@ -7,6 +7,9 @@ for manipulating/modifying station data
 """
 
 
+from sympy import false
+
+
 class MonitoringStation:
     """This class represents a river level monitoring station"""
 
@@ -38,3 +41,29 @@ class MonitoringStation:
         d += "   river:         {}\n".format(self.river)
         d += "   typical range: {}".format(self.typical_range)
         return d
+
+    def typical_range_consistent(self):
+        # Checks if there are any values assigned to the self.typical_range attribute
+        if self.typical_range is None:
+            return False
+
+        # Then checks if min greater than max
+        elif self.typical_range[0] > self.typical_range[1]:
+            return False
+
+        # Returns true for any other case as ranges must be consistent
+        else:
+            return True
+
+def inconsistent_typical_range_stations(stations):
+    # Creates list to append inconsistent stations to 
+    output_list = []
+
+    # Iterations through all the stations in the station list
+    for station in stations:
+        # If inconsistent range, append to the output_list
+        if station.typical_range_consistent() == False:
+            output_list.append(station.name)
+    
+    # Return the output_list sorted by alphabetical order of name
+    return sorted(output_list)
