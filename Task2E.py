@@ -2,35 +2,49 @@
 #
 # SPDX-License-Identifier: MIT
 
+import datetime
 from floodsystem.plot import plot_water_levels
 from floodsystem.stationdata import build_station_list, update_water_levels
 from floodsystem.utils import sorted_by_key
 from floodsystem.datafetcher import fetch_measure_levels
 
 def run():
-    print("Has started the run function")
-    
+   
     # Build list of stations
     stations = build_station_list()
 
+    # Set number of days and stations to plot --> specified in the documentation
     days_to_plot = 10
     number_highest_flow_to_plot = 5
 
+    # Update the current water levels in each station object from the internet
     update_water_levels(stations)
+
+    # Create empty list for storing tuples of station object and current height
     station_heights = []
+
+    # Iterate through all stations to append tuple of station object and current height
     for station in stations:
-        station_heights.append([station, station.latest_level])
 
-    sorted_heights = sorted_by_key(station_heights, 1)
+        level = station.latest_level
 
+        # Check if latest_level object is None. If so, change to 0 as helps later sorting algorithms
+        if level == None:
+            level = 0
+
+        station_heights.append((station, level))
+
+    # Sort the final lists of tuples by the current height of the river
+    sorted_heights = sorted_by_key(station_heights, 1, reverse=True)
+
+    # Iterate through the first 5 stations (or number specified)
     for station in sorted_heights[:number_highest_flow_to_plot]:
-        dates, levels = fetch_measure_levels(station.measure_id, days_to_plot)
+        # Get lists of dates and levels 
+        dates, levels = fetch_measure_levels(station[0].measure_id, datetime.timedelta(days=days_to_plot))
+
+        # Call the plotting function to plot each station one at a time
         plot_water_levels(station[0], dates, levels)
-
-    print("Should have plotted the 5 graphs")
-
-
-    
+  
 
 
 if __name__ == "__main__":
