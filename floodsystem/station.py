@@ -55,6 +55,7 @@ class MonitoringStation:
         else:
             return True
 
+
 def inconsistent_typical_range_stations(stations):
     # Creates list to append inconsistent stations to 
     output_list = []
