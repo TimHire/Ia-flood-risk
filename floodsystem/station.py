@@ -7,7 +7,7 @@ for manipulating/modifying station data
 """
 
 
-from sympy import false
+#from sympy import false                   # Checking if range data None rather than using sympy.false
 
 
 class MonitoringStation:
