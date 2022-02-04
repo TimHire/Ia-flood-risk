@@ -29,6 +29,20 @@ def stations_by_distance(stations, p):
     return sorted_output
 
 
+def stations_within_radius(stations, centre, r):
+    for station in stations:
+        distance=haversine(station.coord,centre)
+        output_list.append((station,distance))
+    sorted_output=sorted_by_key(output_list,1)
+    return sorted_output
+
+
+
+
+
+
+
+
 def rivers_by_station_number(stations, N):
     # Function to return the number of stations on each river
 
@@ -61,3 +75,8 @@ def rivers_by_station_number(stations, N):
 
     # Return the N rivers with the most stations as a list of tuples
     return sorted_output[:N]
+
+
+
+
+
