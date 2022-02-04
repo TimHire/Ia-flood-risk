@@ -40,11 +40,16 @@ def run():
 
     # Iterate through the first 5 stations (or number specified)
     for station in sorted_heights[:number_highest_flow_to_plot]:
-        # Get lists of dates and levels 
-        dates, levels = fetch_measure_levels(station[0].measure_id, datetime.timedelta(days=days_to_plot))
+        try:
+            # Get lists of dates and levels 
+            dates, levels = fetch_measure_levels(station[0].measure_id, datetime.timedelta(days=days_to_plot))
 
-        # Call the plotting function to plot each station one at a time
-        plot_water_level_with_fit(station[0], dates, levels, polynomial_level)
+            # Call the plotting function to plot each station one at a time
+            plot_water_level_with_fit(station[0], dates, levels, polynomial_level)
+
+        except:
+            # Data is not linear so an error in the best fit algorithm --> numpy.polyfit throws an error
+            print("Data Error: data not linear so cannot find line of best fit")
   
 
 
