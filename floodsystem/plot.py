@@ -69,7 +69,7 @@ def plot_water_level_with_fit(station, dates, levels, p):
     plt.xticks(rotation=45)
     plt.title("Station: {}".format(station.name))
     plt.legend()
-
+    
     # Code below for altering the y_limits to just be outside the normal range
     """# Get the difference between the min and max ranges, and add 1% range to the min/max y limits
     normal_range_range = station.typical_range[1] - station.typical_range[0]
