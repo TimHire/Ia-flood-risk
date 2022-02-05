@@ -30,19 +30,20 @@ def stations_by_distance(stations, p):
 
 
 def stations_within_radius(stations, centre, r):
+    # Create empty list for storing stations within radius
     output_list = []
+
+    # Iterate through stations in the list
     for station in stations:
+        # Calculate the distance betweeen the individual station and the point
         distance = haversine(station.coord, centre)
+
+        # Compare if the distance is within the radius. If yet, append to the list
         if distance < r:
             output_list.append(station)
     
+    # Return the output_list 
     return output_list
-
-
-
-
-
-
 
 def rivers_by_station_number(stations, N):
     # Function to return the number of stations on each river
