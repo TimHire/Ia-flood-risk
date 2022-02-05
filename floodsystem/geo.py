@@ -6,7 +6,7 @@ geographical data.
 
 """
 
-from numpy import number
+#from numpy import number
 from .utils import sorted_by_key  # noqa
 from haversine import haversine
 
@@ -41,9 +41,40 @@ def stations_within_radius(stations, centre, r):
         # Compare if the distance is within the radius. If yet, append to the list
         if distance < r:
             output_list.append(station.name)
-    
+            
     # Return the output_list 
     return output_list
+
+def rivers_with_station(stations):
+    # Create empty list to append rivers to
+    output_list = []
+
+    # Iterate through the list of stations
+    for station in stations:
+        # Append name of river to the list
+        output_list.append(station.river)
+
+    # Convert list to a set to remove duplicates
+    return set(output_list)
+
+
+def stations_by_river(stations):
+    # Create empty dictionary
+    output_dict = {}
+
+    # Iterate through the stations
+    for station in stations:
+        # Check whether the river already in the dicionary --> append station object to value
+        if station.river in output_dict.keys():
+            output_dict[station.river].append(station)
+
+        # River not already in the dictionary
+        else:
+            output_dict[station.river] = [station]
+
+    # Return the dicionary
+    return output_dict
+
 
 def rivers_by_station_number(stations, N):
     # Function to return the number of stations on each river
