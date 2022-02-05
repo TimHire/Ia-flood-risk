@@ -10,33 +10,15 @@ def run():
 
     # Get list of station objects
     station_list = build_station_list()
-    within_list = []
 
-    station_within_radius = stations_within_radius(station_list,cambridge,r)
+    station_within_radius = stations_within_radius(station_list, cambridge, r)
+    print(station_within_radius)
 
-    for station in station_list:
-        if r < station_within_radius:
-            print(station)
-            within_list = [station]
-sorted_output=sorted_by_key(within_list)
-
+    sorted_output = sort(station_within_radius)
+    print(station_within_radius)
     
 
 
-   
-
-
-    # Pack first 10 and last 10 into tuple for more efficient coding
-    first_last = (ordered_distance_list[:10], ordered_distance_list[-10:])
-    for end in first_last:
-        output_list = []
-
-        # For first and last 10 in turn, append name, town and distance as a tuple to the output_list
-        for i in range(10):
-            output_list.append((end[i][0].name, end[i][0].town, end[i][1]))
-
-        # Print the first or last list in turn
-        print(output_list)
 
 
 if __name__ == "__main__":
