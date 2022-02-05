@@ -16,8 +16,8 @@ def run():
     station_within_radius = stations_within_radius(station_list, cambridge, r)
 
     # Sort the stations in alphabetical order and print
-    station_within_radius.sort()
-    print(station_within_radius)
+    sorted_list = sorted(station_within_radius)
+    print(sorted_list)
     
 
 if __name__ == "__main__":

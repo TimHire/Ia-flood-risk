@@ -40,7 +40,7 @@ def stations_within_radius(stations, centre, r):
 
         # Compare if the distance is within the radius. If yet, append to the list
         if distance < r:
-            output_list.append(station)
+            output_list.append(station.name)
     
     # Return the output_list 
     return output_list
