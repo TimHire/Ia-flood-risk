@@ -10,6 +10,18 @@ def run():
 
     # Get list of station objects
     station_list = build_station_list()
+    within_list = []
+
+    station_within_radius = stations_within_radius(station_list,cambridge,r)
+
+    for station in station_list:
+        if r < station_within_radius:
+            print(station)
+            within_list = [station]
+sorted_output=sorted_by_key(within_list)
+
+    
+
 
    
 
