@@ -12,4 +12,4 @@ def testing_best_fit_plotting():
     p_coeff = np.polyfit(dates, levels, n)  
     poly = np.poly1d(p_coeff)
 
-    assert poly(156) == -239441.47360061095
+    assert poly(156) == 94758543203.9997
