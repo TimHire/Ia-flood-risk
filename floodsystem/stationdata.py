@@ -6,6 +6,8 @@ JSON objects fetched from the Internet and
 
 """
 
+from pygments import highlight
+from sympy import lowergamma
 from . import datafetcher
 from .station import MonitoringStation
 
@@ -87,3 +89,11 @@ def update_water_levels(stations):
         if station.measure_id in measure_id_to_value:
             if isinstance(measure_id_to_value[station.measure_id], float):
                 station.latest_level = measure_id_to_value[station.measure_id]
+
+
+stations=[]
+station=(name, height)
+def relative_water_level(self):
+    for station in stations:
+       ratio=(height-lower boundary)/(upper boundary-lower boundary)
+    return ratio
