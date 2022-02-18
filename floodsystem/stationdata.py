@@ -91,9 +91,5 @@ def update_water_levels(stations):
                 station.latest_level = measure_id_to_value[station.measure_id]
 
 
-stations=[]
-station=(name, height)
-def relative_water_level(self):
-    for station in stations:
-       ratio=(height-lower boundary)/(upper boundary-lower boundary)
-    return ratio
+
+
