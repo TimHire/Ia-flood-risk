@@ -13,16 +13,9 @@ from floodsystem.flood import stations_level_over_threshold
 from floodsystem.datafetcher import fetch_measure_levels
 from floodsystem.analysis import polyfit
 
-def run():
-    # Build list of stations
-    stations = build_station_list()
 
-    # DEFINITION OF SOME OF THE CONSTANTS FOR NUMBERICALLY DEFINING THE RISK LEVELS OF EACH TOWN
-    # Define the relative risk for severe, high, moderate, low risk levels
-    relative_level_risk_boundaries = [0.2, 0.5, 0.8, 1]
-    gradient_risk_boundaries = [-2, 0, 2]
-    risk_names = ["low", "moderate", "high", "severe"]
-    importance_of_gradient = 0.05                       # Number to bias the risk factor depending on final gradient of the graph
+def get_town_risk_coefficients(stations, gradient_risk_boundaries, importance_of_gradient):
+    # Function to return a dictionary with each town and their final risk value associated
 
     # Get a list of tuples of all the stations and their associated relative risk levels
     stations_relative_levels_high = stations_level_over_threshold(stations, 0)
@@ -69,6 +62,22 @@ def run():
                 towns_risks[station.name] = risk_index
         else:
             towns_risks[station.name] = risk_index
+
+    return towns_risks
+
+
+def run():
+    # Build list of stations
+    stations = build_station_list()
+
+    # DEFINITION OF SOME OF THE CONSTANTS FOR NUMBERICALLY DEFINING THE RISK LEVELS OF EACH TOWN
+    # Define the relative risk for severe, high, moderate, low risk levels
+    relative_level_risk_boundaries = [0.2, 0.5, 0.8, 1]
+    gradient_risk_boundaries = [-2, 0, 2]
+    risk_names = ["low", "moderate", "high", "severe"]
+    importance_of_gradient = 0.05                       # Number to bias the risk factor depending on final gradient of the graph
+
+    towns_risks = get_town_risk_coefficients(stations, gradient_risk_boundaries, importance_of_gradient)
 
     severe_risk_towns = []
     # Check through the towns_risk list and convert all the risk values to a work risk level
