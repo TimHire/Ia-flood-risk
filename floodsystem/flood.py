@@ -7,6 +7,6 @@ def stations_level_over_threshold(stations, tol):
 
 
 def stations_highest_rel_level(stations, N):
-    # Function for writign the code for Task 2C
+    # Function for writing the code for Task 2C
 
     return 1 # Need to get rid of then when writing the function
