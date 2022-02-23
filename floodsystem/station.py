@@ -55,6 +55,17 @@ class MonitoringStation:
         else:
             return True
 
+    def relative_water_level(self):
+        try:
+            low_bound, high_bound = self.typical_range 
+            range = high_bound - low_bound
+            normalized_height = self.latest_level - low_bound
+            ratio = normalized_height/ range
+            return ratio
+
+        except:
+            return None
+
 
 def inconsistent_typical_range_stations(stations):
     # Creates list to append inconsistent stations to 
