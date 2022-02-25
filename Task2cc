@@ -1,6 +1,9 @@
 import flood
-
+def run():
+    # Build list of stations
+    stations = build_station_list()
 
 stations_highest_rel_level(stations,N)
+# using the code in flood?
 list = stations（10）
 # take the first 1o in the list
