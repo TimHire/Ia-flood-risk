@@ -2,7 +2,7 @@ import flood
 def run():
     # Build list of stations
     stations = build_station_list()
-
+list = []
 stations_highest_rel_level(stations,N)
 # using the code in flood?
 list = stations（10）
