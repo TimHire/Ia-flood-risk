@@ -28,10 +28,10 @@ def stations_level_over_threshold(stations, tol):
 
 
 def stations_highest_rel_level(stations, N):
-    # Function for writing the code for Task 2C
-    staion = N
-    # link the station to the value
-    sorted(stations)
-    #sort the stations by the value of the N?
-    return stations
-     # Need to get rid of then when writing the function
+    # Function for writing the code for Task 2C - returns the N highest relative height stations
+    
+    # Get a list of all the relative height of the stations
+    relative_level_list = stations_level_over_threshold(stations, 0)
+
+    # Return the stations with the 10 highest relative ranges
+    return relative_level_list[:N]
