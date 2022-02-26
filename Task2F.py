@@ -43,7 +43,7 @@ def run():
         try:
             # Get lists of dates and levels 
             dates, levels = fetch_measure_levels(station[0].measure_id, datetime.timedelta(days=days_to_plot))
-
+            print(dates, levels)
             # Call the plotting function to plot each station one at a time
             plot_water_level_with_fit(station[0], dates, levels, polynomial_level)
 

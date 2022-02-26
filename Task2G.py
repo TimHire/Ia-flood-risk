@@ -22,53 +22,58 @@ def get_town_risk_coefficients(stations, gradient_risk_boundaries, importance_of
 
     # DEFINE CONSTANTS FOR WORKING OUT THE RISK LEVELS OF ALL THE TOWNS ON THE MAP    
     towns_risks = {}        # Create an empty dictionary to append the town:risk to
-    n = 6                   # define the number of terms in the polynomial to set the accuracy of the measurements
+    n = 4                   # define the number of terms in the polynomial to set the accuracy of the measurements
     days_to_plot = 14       # number of past days to get the data for to polynomial fit
 
     # Iterate through all the stations individually and assess their risk levels
-    for station, relative in stations_relative_levels_high:
+    for entry in stations_relative_levels_high:
+        try:
+            # Add in the diffrentiation data if the data is linear so can plot a line of best fit
+            # Parse in the data to the polyfit function to get a polynomial which can be diffrentiated to get the change in the flood risk
+            # Get the data for the last 10 days
+            dates, levels = fetch_measure_levels(entry[0].measure_id, datetime.timedelta(days=days_to_plot))
+            # Get the polynomial coefficients for the line of best fit
+            p_coefficients, offset = polyfit(dates, levels, n)              
+            # Convert the polynomial coefficients into a function object
+            function = np.poly1d(p_coefficients)                            
+            # Get the diffrentiated polynomial object
+            diffrentiated_coefficients = np.polyder(function)               
 
-        # Parse in the data to the polyfit function to get a polynomial which can be diffrentiated to get the change in the flood risk
-        # Get the data for the last 10 days
-        dates, levels = fetch_measure_levels(station.measure_id, datetime.timedelta(days=days_to_plot))
-        
-        # Get the polynomial coefficients for the line of best fit
-        p_coefficients, offset = polyfit(dates, levels, n)              
-        # Convert the polynomial coefficients into a function object
-        function = np.poly1d(p_coefficients)                            
-        # Get the diffrentiated polynomial object
-        diffrentiated_coefficients = np.polyder(function)               
+            # Convert the dates to numbers so can be inputted into the diffrentiated function    
+            dates_floats = matplotlib.dates.date2num(dates)
+            # Turn the dates into a float of the number of days to the start
+            final_gradient = diffrentiated_coefficients(dates_floats[-1] - dates_floats[0])     
 
-        # Convert the dates to numbers so can be inputted into the diffrentiated function    
-        dates_floats = matplotlib.dates.date2num(dates)
-        # Turn the dates into a float of the number of days to the start
-        final_gradient = diffrentiated_coefficients(dates_floats[-1] - dates_floats[0])     
-
-        # Compare the data to the risk boundaries defined above
-        # Change the risk rating depending on the current trend of the water level
-        #If the current trend of the data is reducing
-        if final_gradient < gradient_risk_boundaries[0]:
-            risk_index = relative - importance_of_gradient
-        #If the current trend of the data is staying the same
-        if (final_gradient > gradient_risk_boundaries[1]) and (final_gradient < gradient_risk_boundaries[2]):
-            risk_index = relative
-        #If the current trend of the data is increasing
-        if final_gradient > gradient_risk_boundaries[2]:
-            risk_index = relative + importance_of_gradient
-
+            # Compare the data to the risk boundaries defined above
+            # Change the risk rating depending on the current trend of the water level
+            #If the current trend of the data is reducing
+            if final_gradient < gradient_risk_boundaries[0]:
+                risk_index = entry[1] - importance_of_gradient
+            #If the current trend of the data is staying the same
+            if (final_gradient > gradient_risk_boundaries[1]) and (final_gradient < gradient_risk_boundaries[2]):
+                risk_index = entry[1]
+            #If the current trend of the data is increasing
+            if final_gradient > gradient_risk_boundaries[2]:
+                risk_index = entry[1] + importance_of_gradient
+        except:
+            # Data is not linear to cannot add trend factor to the risk level
+            risk_index = entry[1]
+        print(entry[0].name)
         # Check if the town already has a risk factor associated with it. Only update the risk value if it is greater
-        if station.name in list(towns_risks.keys()):
-            if risk_index > towns_risks[station.name]:
-                towns_risks[station.name] = risk_index
+        if entry[0].name in list(towns_risks.keys()):
+            if risk_index > towns_risks[entry[0].name]:
+                towns_risks[entry[0].name] = risk_index
         else:
-            towns_risks[station.name] = risk_index
+            towns_risks[entry[0].name] = risk_index
 
+    print("Returning dictionary of town_risks")
     return towns_risks
 
 
 def run():
-    # Build list of stations
+    # Build list of stations and update the current water heights at each station
     stations = build_station_list()
+    update_water_levels(stations)
 
     # DEFINITION OF SOME OF THE CONSTANTS FOR NUMBERICALLY DEFINING THE RISK LEVELS OF EACH TOWN
     # Define the relative risk for severe, high, moderate, low risk levels
@@ -78,6 +83,7 @@ def run():
     importance_of_gradient = 0.05                       # Number to bias the risk factor depending on final gradient of the graph
 
     towns_risks = get_town_risk_coefficients(stations, gradient_risk_boundaries, importance_of_gradient)
+    print(towns_risks)
 
     severe_risk_towns = []
     # Check through the towns_risk list and convert all the risk values to a work risk level
