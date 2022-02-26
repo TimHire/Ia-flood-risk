@@ -9,7 +9,6 @@ for manipulating/modifying station data
 
 #from sympy import false                   # Checking if range data None rather than using sympy.false
 
-
 class MonitoringStation:
     """This class represents a river level monitoring station"""
 
@@ -57,10 +56,15 @@ class MonitoringStation:
 
     def relative_water_level(self):
         try:
-            low_bound, high_bound = self.typical_range 
+            low_bound, high_bound = self.typical_range
+
+            # Get the range between the high and low bound values for the typical range
             range = high_bound - low_bound
+
+            # Normalise the height by removing the value of the lower bound
             normalized_height = self.latest_level - low_bound
-            ratio = normalized_height/ range
+            # Get the ratio of the normalised_height to the range between the typical values
+            ratio = normalized_height / range
             return ratio
 
         except:
